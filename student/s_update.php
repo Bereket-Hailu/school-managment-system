@@ -141,3 +141,60 @@
 
 
 <?php
+if(isset($_POST['submit'])){
+
+    /* ******* */
+//$sid = $_GET['sid'];
+$s_name= $_POST['s_name'];
+$s_father= $_POST['s_father'];
+$s_roll= $_POST['s_roll'];
+$s_branch= $_POST['s_branch'];
+$s_sem= $_POST['s_sem'];
+$s_marks= $_POST['s_marks'];
+
+
+$imgName = $_FILES['img']['name'] ;
+	//saving img as name
+if($imgName==null){
+    $que= "UPDATE `sdetails` SET `name`='$s_name',`branch`='$s_branch',`sem`='$s_sem',
+    `roll`='$s_roll',`fathername`='$s_father',`score`='$s_marks' WHERE `id`='$sid' "  ;
+    
+}
+else{
+
+    $tempImagesName= $_FILES['img']['tmp_name'] ; //saving img name as temp name
+        
+    move_uploaded_file($tempImagesName , "../images/$imgName");
+
+    $que= "UPDATE `sdetails` SET `name`='$s_name',`branch`='$s_branch',`sem`='$s_sem',
+                `roll`='$s_roll',`fathername`='$s_father',`score`='$s_marks',`photo`='$imgName' WHERE `id`='$sid' "  ;
+}
+
+$res=mysqli_query($con,$que);
+
+if($res){
+   
+  //  header('Location:student/s_show.php');
+   // echo "registered";
+    ?>
+    <script>
+        alert(' data has been Updated successfully.');
+        window.open('s_update.php','_self');
+    </script>
+    <!--window.open('../student/s_login.php','_self');  -->
+    <?php
+    
+    
+}
+else{
+    header('Location:edit.php');
+    ?>
+        <script>
+            alert('data not received! Try again.');
+        </script>
+    <?php
+   // echo "Error!";
+    
+}
+}
+?>
