@@ -45,3 +45,48 @@
 
 
 <?php
+include('../dbcon.php');
+
+if(isset($_POST['login'])){
+    
+    $s_username= $_POST['suser'];
+    $s_pass= $_POST['spass'];
+
+
+    $query= "SELECT * FROM `student` WHERE  `suser`='$s_username' AND `spass`='$s_pass'   ";
+
+    $res=mysqli_query($con,$query);
+
+    $row = mysqli_num_rows($res);
+
+
+    if($row < 1){
+       echo "runiing";
+        ?>
+        <script>
+            alert('username or password does not match!');
+            window.open('s_login.php','_self');
+        </script>
+        <!--window.open('../student/s_login.php','_self');  -->
+        <?php
+        //header('Location:student/s_login.php');
+    }
+    else{
+        
+        $data = mysqli_fetch_assoc($res);
+        $current_id= $data['sid'];
+        $current_user= $data['suser'];
+        echo "id :" .$current_id;
+        echo "name: ".$current_user;
+
+       
+
+        $_SESSION['sid']=$current_id;   //new variable sid 
+        $_SESSION['suser']=$current_user; 
+
+        header('location:s_afterlogin.php');
+
+    }
+}
+
+?>
