@@ -72,3 +72,81 @@
 
 
 <?php
+
+include('../dbcon.php');
+if(isset($_POST['submit'])){
+    
+    $s_name= $_POST['s_name'];
+    $s_father= $_POST['s_father'];
+    $s_roll= $_POST['s_roll'];
+    $s_branch= $_POST['s_branch'];
+    $s_sem= $_POST['s_sem'];
+    $s_marks= $_POST['s_marks'];
+
+
+    $thisId=$_SESSION['sid'];
+    //check data already uploaded or not
+
+    $CheckQuery= "SELECT * FROM `sdetails` WHERE `id`='$thisId' ";
+
+    $CheckRes=mysqli_query($con,$CheckQuery);
+
+    $CheckRow = mysqli_num_rows($CheckRes);
+      
+       if($CheckRow < 1){     // no details with this id
+           
+               //take data in
+
+            $imgName = $_FILES['img']['name'] ;	//saving img as name
+            $tempImagesName= $_FILES['img']['tmp_name'] ; //saving img name as temp name
+            
+            move_uploaded_file($tempImagesName , "../images/$imgName");
+            
+            
+            
+            $query= "INSERT INTO `sdetails` (`id`, `name`, `branch`, `sem`, `roll`, `fathername`, `score`,`photo`) 
+                                VALUES ('$thisId','$s_name','$s_branch','$s_sem','$s_roll','$s_father','$s_marks','$imgName')";
+    
+           $res=mysqli_query($con,$query);
+       
+           $ndata = mysqli_fetch_assoc($res); 
+       
+           if($res){
+       
+               ?>
+               <script>
+                   alert('data uploaded you can edit it as well. \n or exit.');
+                   window.open('s_update.php?sid=<?php echo $_SESSION['sid']; ?>','_self');
+               </script>
+               
+               <?php
+               
+           }
+           else{
+               //header('Location:../student/s_data_in.php');
+               ?>
+                   <script>
+                       alert('already submit.');
+                       window.open('s_data_in.php','_self');
+                   </script>
+               <?php
+              // echo "Error!";
+               
+           }
+
+
+        }
+
+        else{
+            ?>
+            <script>
+                alert('already uploaded data. \n You can update it.');
+                window.open('s_update.php','_self'); 
+            </script>
+            
+            <?php
+        }
+		
+}
+
+?>
