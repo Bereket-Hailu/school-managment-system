@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html>
     <head>
         <title> student managment system </title>
@@ -67,7 +67,7 @@
 
      $SearchRow = mysqli_num_rows($SearchRes);
        
-        if($SearchRow < 1){     // no username found with the same name
+        if($SearchRow < 1){     
             
                 $query= "INSERT INTO `student`( `suser`, `spass`, `email`) VALUES ('$s_username','$s_pass','$s_email')";
 
@@ -94,12 +94,12 @@
                 }
 
         }
-        else{    //user found with the same name
+        else{    
             
             ?>
                 <script>
                     alert('Username already taken choose another one.');
-                  //  window.open('./student/s_login.php','_self'); 
+                
                 </script>
             <?php
         }
